@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: spellbound-api
+  # SecurityConfig already permits every request, so the autoconfigured
+  # in-memory user (and its noisy random-password log line) is dead weight
+  # until #10 replaces it with real JWT authentication.
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/commerce}
     username: ${DATABASE_USERNAME:commerce}
