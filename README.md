@@ -2,6 +2,8 @@
 
 E-commerce platform with POS integration.
 
+**New to the team? Start at [`GETTING-STARTED.md`](GETTING-STARTED.md)** — your section, the workflow, and what to read next.
+
 ## Prerequisites
 
 - JDK 21 (Temurin)
@@ -41,6 +43,8 @@ cd apps/api && ./gradlew build    # full backend build
 
 ## Documentation
 
+- `GETTING-STARTED.md` — onboarding: your section, the workflow, what to read first
+- `docs/team-charter.md` — who does what, how we work together
 - `docs/engineering-handbook.md` — branching, conventions, build order
 - `docs/implementation-plan.md` — scope, phases, architecture
 - `docs/adr/` — architecture decision records
