@@ -43,8 +43,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          types: feat,fix,refactor,perf,test,docs,chore,build,ci
-          scopes: api,storefront,admin,ui,client,infra,deps
+          # One per line, not comma-separated - the action treats a
+          # comma-joined string as a single type/scope, not a list.
+          types: |
+            feat
+            fix
+            refactor
+            perf
+            test
+            docs
+            chore
+            build
+            ci
+          scopes: |
+            api
+            storefront
+            admin
+            ui
+            client
+            infra
+            deps
 
   # -------------------------------------------------------------------------
   # Backend: compile, unit tests, and integration tests.
