@@ -36,9 +36,14 @@ REPO_VISIBILITY="private"            # private | public
 SCAFFOLD_DIR="./scaffold"            # unzipped starter scaffold
 
 # GitHub usernames, in the order used by CODEOWNERS.
-# Left empty deliberately - teammate handles not confirmed yet. Fill these in
-# and re-run just the "Inviting collaborators" step once you have them.
-COLLABORATORS=()
+# Invites already sent manually via the GitHub UI - this array is kept in
+# sync for reference and in case the repo is ever rebuilt from this script.
+COLLABORATORS=(
+  "Deeghayu03"
+  "Prabhath-Samarakoon"
+  "wickramaarachchi-er"
+  "ShanukaWeeriyasanka"
+)
 
 # ---------------------------------------------------------------------------
 # Preflight — fail early and loudly rather than half-creating things

@@ -5,42 +5,40 @@
 # Later rules override earlier ones, so ordering matters: the general default
 # is declared first and the specific overrides follow.
 #
-# Replace the placeholder handles with real GitHub usernames before enabling
-# branch protection.
 # ---------------------------------------------------------------------------
 
 # Default owner for anything not matched below.
-*                                           @bimsara
+*                                           @Bimsara-Yehan
 
 # --- Backend: shared and lead-owned modules --------------------------------
-/apps/api/src/main/java/com/spellbound/shared/     @bimsara
-/apps/api/src/main/java/com/spellbound/pos/        @bimsara
-/apps/api/src/main/java/com/spellbound/outbox/     @bimsara
+/apps/api/src/main/java/com/spellbound/shared/     @Bimsara-Yehan
+/apps/api/src/main/java/com/spellbound/pos/        @Bimsara-Yehan
+/apps/api/src/main/java/com/spellbound/outbox/     @Bimsara-Yehan
 
 # --- Backend: catalogue domain (Deeghayu) ----------------------------------
-/apps/api/src/main/java/com/spellbound/catalogue/  @deeghayu
-/apps/api/src/main/java/com/spellbound/inventory/  @deeghayu
-/apps/api/src/main/java/com/spellbound/reporting/  @deeghayu
+/apps/api/src/main/java/com/spellbound/catalogue/  @Deeghayu03
+/apps/api/src/main/java/com/spellbound/inventory/  @Deeghayu03
+/apps/api/src/main/java/com/spellbound/reporting/  @Deeghayu03
 
 # --- Backend: commerce domain (Malindu) ------------------------------------
-/apps/api/src/main/java/com/spellbound/ordering/   @malindu
-/apps/api/src/main/java/com/spellbound/payment/    @malindu
-/apps/api/src/main/java/com/spellbound/customer/   @malindu
+/apps/api/src/main/java/com/spellbound/ordering/   @Prabhath-Samarakoon
+/apps/api/src/main/java/com/spellbound/payment/    @Prabhath-Samarakoon
+/apps/api/src/main/java/com/spellbound/customer/   @Prabhath-Samarakoon
 
 # --- Contracts and schema: always reviewed by the lead ---------------------
 # A migration that drops a column looks identical to one that renames it.
-/apps/api/src/main/resources/db/migration/  @bimsara
-/apps/api/src/main/resources/openapi.yaml   @bimsara
+/apps/api/src/main/resources/db/migration/  @Bimsara-Yehan
+/apps/api/src/main/resources/openapi.yaml   @Bimsara-Yehan
 
 # --- Frontend --------------------------------------------------------------
-/apps/admin/                                @rashmika
-/apps/storefront/                           @shanuka
+/apps/admin/                                @wickramaarachchi-er
+/apps/storefront/                           @ShanukaWeeriyasanka
 
 # The design system has a single owner by design. Five people each adding
 # "just one" button variant is how a design system dies in three weeks.
-/packages/ui/                               @shanuka
+/packages/ui/                               @ShanukaWeeriyasanka
 
 # --- Infrastructure and CI -------------------------------------------------
-/.github/                                   @bimsara
-/docker/                                    @bimsara
-/docs/adr/                                  @bimsara
+/.github/                                   @Bimsara-Yehan
+/docker/                                    @Bimsara-Yehan
+/docs/adr/                                  @Bimsara-Yehan
