@@ -1,0 +1,46 @@
+# ---------------------------------------------------------------------------
+# Code ownership. GitHub automatically requests review from the owner of any
+# path touched by a pull request.
+#
+# Later rules override earlier ones, so ordering matters: the general default
+# is declared first and the specific overrides follow.
+#
+# Replace the placeholder handles with real GitHub usernames before enabling
+# branch protection.
+# ---------------------------------------------------------------------------
+
+# Default owner for anything not matched below.
+*                                           @bimsara
+
+# --- Backend: shared and lead-owned modules --------------------------------
+/apps/api/src/main/java/com/spellbound/shared/     @bimsara
+/apps/api/src/main/java/com/spellbound/pos/        @bimsara
+/apps/api/src/main/java/com/spellbound/outbox/     @bimsara
+
+# --- Backend: catalogue domain (Deeghayu) ----------------------------------
+/apps/api/src/main/java/com/spellbound/catalogue/  @deeghayu
+/apps/api/src/main/java/com/spellbound/inventory/  @deeghayu
+/apps/api/src/main/java/com/spellbound/reporting/  @deeghayu
+
+# --- Backend: commerce domain (Malindu) ------------------------------------
+/apps/api/src/main/java/com/spellbound/ordering/   @malindu
+/apps/api/src/main/java/com/spellbound/payment/    @malindu
+/apps/api/src/main/java/com/spellbound/customer/   @malindu
+
+# --- Contracts and schema: always reviewed by the lead ---------------------
+# A migration that drops a column looks identical to one that renames it.
+/apps/api/src/main/resources/db/migration/  @bimsara
+/apps/api/src/main/resources/openapi.yaml   @bimsara
+
+# --- Frontend --------------------------------------------------------------
+/apps/admin/                                @rashmika
+/apps/storefront/                           @shanuka
+
+# The design system has a single owner by design. Five people each adding
+# "just one" button variant is how a design system dies in three weeks.
+/packages/ui/                               @shanuka
+
+# --- Infrastructure and CI -------------------------------------------------
+/.github/                                   @bimsara
+/docker/                                    @bimsara
+/docs/adr/                                  @bimsara

@@ -1,0 +1,77 @@
+# ---------------------------------------------------------------------------
+# Local development dependencies.
+#
+# Deliberately mirrors the production topology: the same PostgreSQL major
+# version, the same Redis major version. Mailpit and MinIO stand in for the
+# transactional email provider and object storage so that no local workflow
+# requires an internet connection or a real vendor account.
+#
+#   docker compose -f docker/docker-compose.yml up -d
+# ---------------------------------------------------------------------------
+name: spellbound
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: wc-postgres
+    environment:
+      POSTGRES_DB: commerce
+      POSTGRES_USER: commerce
+      # Local-only credential. Production secrets never live in a compose file.
+      POSTGRES_PASSWORD: localdev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # The API waits on this, so a slow first start does not produce a
+      # confusing connection-refused error.
+      test: ['CMD-SHELL', 'pg_isready -U commerce -d commerce']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: wc-redis
+    # Append-only persistence so stock reservations survive a container
+    # restart during development.
+    command: redis-server --appendonly yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    # Captures every outbound email and serves them at http://localhost:8025.
+    # Prevents the classic accident of a test run emailing real customers.
+    image: axllent/mailpit:latest
+    container_name: wc-mailpit
+    ports:
+      - '1025:1025'   # SMTP
+      - '8025:8025'   # web UI
+
+  minio:
+    # S3-compatible object storage for product images. Swapping to Cloudflare
+    # R2 in production is a configuration change, not a code change.
+    image: minio/minio:latest
+    container_name: wc-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: localdev
+      MINIO_ROOT_PASSWORD: localdev123
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio-data:/data
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:

@@ -1,0 +1,32 @@
+# ---------------------------------------------------------------------------
+# Normalises line endings across the team. Without this, a Windows developer
+# and a macOS developer produce diffs where every line appears changed, which
+# makes review impossible.
+# ---------------------------------------------------------------------------
+
+# Detect text files automatically and normalise to LF in the repository.
+* text=auto eol=lf
+
+# Scripts that must keep LF regardless of platform.
+*.sh        text eol=lf
+gradlew     text eol=lf
+
+# Windows-only scripts keep CRLF.
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+gradlew.bat text eol=crlf
+
+# Binaries — never transform.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+*.pdf   binary
+*.jar   binary
+*.woff  binary
+*.woff2 binary
+
+# Generated files: collapse in PR diffs so reviewers see real changes.
+pnpm-lock.yaml            linguist-generated=true
+packages/api-client/**    linguist-generated=true

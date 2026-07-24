@@ -1,0 +1,32 @@
+# --- Secrets (most important entries in this file) -------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# --- Java / Gradle ---------------------------------------------------------
+build/
+.gradle/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- Node ------------------------------------------------------------------
+node_modules/
+.pnpm-store/
+dist/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# --- Editors and OS --------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+
+# --- Test artefacts --------------------------------------------------------
+playwright-report/
+test-results/
