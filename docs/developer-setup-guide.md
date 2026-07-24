@@ -23,7 +23,8 @@ These versions are locked. Do not install "the latest" — a version mismatch pr
 
 | Role | Recommended |
 | --- | --- |
-| Backend (Bimsara, Deeghayu, Malindu) | IntelliJ IDEA Community Edition |
+| Backend — tech lead (Bimsara) | Visual Studio Code |
+| Backend (Deeghayu, Malindu) | IntelliJ IDEA Community Edition |
 | Frontend (Rashmika, Shanuka) | Visual Studio Code |
 
 Use whichever you prefer — but the shared formatter and linter configuration in the repo is authoritative. Your editor must not reformat files on its own terms.
@@ -243,7 +244,7 @@ All six working means your environment is correct. Stop here and tell the team c
 4. Install the **Lombok** plugin.
 5. Enable *Reformat code* and *Optimize imports* on save.
 
-### VS Code (frontend)
+### VS Code (frontend, and backend if that's your preference)
 
 Open the repository root. VS Code will prompt to install the recommended extensions from `.vscode/extensions.json` — accept.
 
@@ -255,8 +256,12 @@ Open the repository root. VS Code will prompt to install the recommended extensi
 | Vitest | Test runner integration |
 | Playwright | E2E test support |
 | GitLens | Blame and history inline |
+| Extension Pack for Java | Language server, debugger, test runner, project explorer |
+| Gradle for Java | Runs and imports the `apps/api` Gradle build |
+| Spring Boot Extension Pack | Spring Boot dashboard, initializr, config-file support |
+| Lombok Annotations Support | Required — without it, Lombok-generated getters/setters show as errors |
 
-Add to your workspace settings:
+Add to your workspace settings (`.vscode/settings.json` is gitignored except for `extensions.json`, so this stays local to you):
 
 ```jsonc
 {
@@ -266,9 +271,20 @@ Add to your workspace settings:
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // Only needed if you're doing backend work in VS Code instead of IntelliJ.
+  // The machine has both 17 and 21 installed - pin the project to 21 explicitly
+  // rather than relying on whichever JAVA_HOME happens to be active.
+  "java.configuration.runtimes": [
+    { "name": "JavaSE-17", "path": "<path to your JDK 17 install>" },
+    { "name": "JavaSE-21", "path": "<path to your JDK 21 install>", "default": true }
+  ],
+  "java.import.gradle.java.home": "<path to your JDK 21 install>"
 }
 ```
+
+Open `apps/api` (or the repo root — the Gradle extension will find it) and confirm the bottom-right Java/Gradle status shows 21, not 17.
 
 ---
 
