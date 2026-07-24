@@ -9,9 +9,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   push:
-    branches: [main]
+    branches: [main, develop]
 
 # Cancel superseded runs on the same branch. Pushing a fix to a PR should not
 # leave the previous, now-irrelevant run consuming a runner.
