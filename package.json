@@ -1,0 +1,26 @@
+{
+  "name": "spellbound",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  },
+  "prettier": "@spellbound/config/prettier",
+  "scripts": {
+    "dev": "concurrently -n API,STOREFRONT,ADMIN -c \"blue,green,magenta\" \"cd apps/api && ./gradlew bootRun\" \"pnpm --filter @spellbound/storefront dev\" \"pnpm --filter @spellbound/admin dev\"",
+    "generate:api": "echo 'Not yet implemented - see issue #14 (Generated API client and MSW mock setup)'"
+  },
+  "devDependencies": {
+    "@spellbound/config": "workspace:*",
+    "concurrently": "^9.1.0",
+    "prettier": "^3.3.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "^6.0.0"
+    }
+  }
+}

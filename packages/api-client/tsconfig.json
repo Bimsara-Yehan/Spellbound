@@ -1,0 +1,7 @@
+{
+  "extends": "@spellbound/config/typescript/base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src"]
+}

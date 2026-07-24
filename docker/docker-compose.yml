@@ -13,7 +13,7 @@ name: spellbound
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: wc-postgres
+    container_name: spellbound-postgres
     environment:
       POSTGRES_DB: commerce
       POSTGRES_USER: commerce
@@ -33,7 +33,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: wc-redis
+    container_name: spellbound-redis
     # Append-only persistence so stock reservations survive a container
     # restart during development.
     command: redis-server --appendonly yes
@@ -51,7 +51,7 @@ services:
     # Captures every outbound email and serves them at http://localhost:8025.
     # Prevents the classic accident of a test run emailing real customers.
     image: axllent/mailpit:latest
-    container_name: wc-mailpit
+    container_name: spellbound-mailpit
     ports:
       - '1025:1025'   # SMTP
       - '8025:8025'   # web UI
@@ -60,7 +60,7 @@ services:
     # S3-compatible object storage for product images. Swapping to Cloudflare
     # R2 in production is a configuration change, not a code change.
     image: minio/minio:latest
-    container_name: wc-minio
+    container_name: spellbound-minio
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: localdev
