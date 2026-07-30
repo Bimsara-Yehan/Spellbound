@@ -182,9 +182,13 @@ jobs:
         run: ./gradlew generateOpenApiDocs --no-daemon
 
       - name: Fail if the committed spec has drifted
+        # A raw text diff false-positives on YAML serialization differences
+        # (quote style, key order) that don't change the actual API contract -
+        # normalize both files to sorted-key JSON before comparing.
         run: |
-          diff -u apps/api/src/main/resources/openapi.yaml \
-                  apps/api/build/openapi.yaml \
+          yq -o=json 'sort_keys(..)' apps/api/src/main/resources/openapi.yaml > /tmp/committed.json
+          yq -o=json 'sort_keys(..)' apps/api/build/openapi.yaml > /tmp/generated.json
+          diff -u /tmp/committed.json /tmp/generated.json \
             || { echo "::error::OpenAPI spec is out of date. Run 'pnpm generate:api' and commit the result."; exit 1; }
 
   # -------------------------------------------------------------------------
