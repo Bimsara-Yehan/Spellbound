@@ -6,32 +6,67 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
-  /api/v1/reporting/inventory/overview:
+  /api/v1/products/{id}:
     get:
       tags:
-      - reporting-controller
-      operationId: getInventoryOverview
+      - product-controller
+      operationId: getProductById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/InventoryOverviewDto'
-  /api/v1/reporting/inventory/low-stock-alerts:
-    get:
+                $ref: "#/components/schemas/ProductDto"
+    put:
       tags:
-      - reporting-controller
-      operationId: getLowStockAlerts
+      - product-controller
+      operationId: updateProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUpdateRequest"
+        required: true
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LowStockAlertDto'
+                $ref: "#/components/schemas/ProductDto"
+    delete:
+      tags:
+      - product-controller
+      operationId: archiveProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
   /api/v1/products:
     get:
       tags:
@@ -57,14 +92,14 @@ paths:
         in: query
         required: true
         schema:
-          $ref: '#/components/schemas/Pageable'
+          $ref: "#/components/schemas/Pageable"
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/PageProductDto'
+                $ref: "#/components/schemas/PageProductDto"
     post:
       tags:
       - product-controller
@@ -73,7 +108,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductCreateRequest'
+              $ref: "#/components/schemas/ProductCreateRequest"
         required: true
       responses:
         "200":
@@ -81,86 +116,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ProductDto'
-  /api/v1/products/{id}:
-    get:
-      tags:
-      - product-controller
-      operationId: getProductById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-    put:
-      tags:
-      - product-controller
-      operationId: updateProduct
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateRequest'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-    delete:
-      tags:
-      - product-controller
-      operationId: archiveProduct
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-  /api/v1/products/slug/{slug}:
-    get:
-      tags:
-      - product-controller
-      operationId: getProductBySlug
-      parameters:
-      - name: slug
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
+                $ref: "#/components/schemas/ProductDto"
   /api/v1/inventory/{variantId}/reserve:
     post:
       tags:
@@ -185,7 +141,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/InventoryDto'
+                $ref: "#/components/schemas/InventoryDto"
   /api/v1/inventory/{variantId}/release:
     post:
       tags:
@@ -210,7 +166,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/InventoryDto'
+                $ref: "#/components/schemas/InventoryDto"
   /api/v1/inventory/{variantId}/adjust:
     post:
       tags:
@@ -227,7 +183,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StockAdjustmentRequest'
+              $ref: "#/components/schemas/StockAdjustmentRequest"
         required: true
       responses:
         "200":
@@ -235,7 +191,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/InventoryDto'
+                $ref: "#/components/schemas/InventoryDto"
   /api/v1/categories:
     get:
       tags:
@@ -249,7 +205,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CategoryDto'
+                  $ref: "#/components/schemas/CategoryDto"
     post:
       tags:
       - category-controller
@@ -258,7 +214,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CategoryCreateRequest'
+              $ref: "#/components/schemas/CategoryCreateRequest"
         required: true
       responses:
         "200":
@@ -266,12 +222,38 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/CategoryDto'
-  /api/v1/categories/slug/{slug}:
+                $ref: "#/components/schemas/CategoryDto"
+  /api/v1/reporting/inventory/overview:
     get:
       tags:
-      - category-controller
-      operationId: getCategoryBySlug
+      - reporting-controller
+      operationId: getInventoryOverview
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InventoryOverviewDto"
+  /api/v1/reporting/inventory/low-stock-alerts:
+    get:
+      tags:
+      - reporting-controller
+      operationId: getLowStockAlerts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LowStockAlertDto"
+  /api/v1/products/slug/{slug}:
+    get:
+      tags:
+      - product-controller
+      operationId: getProductBySlug
       parameters:
       - name: slug
         in: path
@@ -284,26 +266,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/CategoryDto'
-  /api/v1/categories/{id}:
-    get:
-      tags:
-      - category-controller
-      operationId: getCategoryById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/CategoryDto'
+                $ref: "#/components/schemas/ProductDto"
   /api/v1/inventory:
     get:
       tags:
@@ -317,21 +280,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InventoryDto'
-  /api/v1/inventory/low-stock:
-    get:
-      tags:
-      - inventory-controller
-      operationId: getLowStockInventories
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InventoryDto'
+                  $ref: "#/components/schemas/InventoryDto"
   /api/v1/inventory/{variantId}:
     get:
       tags:
@@ -350,7 +299,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/InventoryDto'
+                $ref: "#/components/schemas/InventoryDto"
   /api/v1/inventory/{variantId}/audit:
     get:
       tags:
@@ -371,24 +320,78 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StockAdjustmentAuditDto'
+                  $ref: "#/components/schemas/StockAdjustmentAuditDto"
+  /api/v1/inventory/low-stock:
+    get:
+      tags:
+      - inventory-controller
+      operationId: getLowStockInventories
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InventoryDto"
+  /api/v1/categories/{id}:
+    get:
+      tags:
+      - category-controller
+      operationId: getCategoryById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /api/v1/categories/slug/{slug}:
+    get:
+      tags:
+      - category-controller
+      operationId: getCategoryBySlug
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
 components:
   schemas:
-    CategoryCreateRequest:
-      required:
-      - name
-      - slug
+    ProductUpdateRequest:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
           type: string
-        parentId:
+        categoryId:
           type: string
           format: uuid
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - ACTIVE
+          - ARCHIVED
+        attributes:
+          type: string
     CategoryDto:
       type: object
       properties:
@@ -404,6 +407,119 @@ components:
         parentId:
           type: string
           format: uuid
+    ProductDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          $ref: "#/components/schemas/CategoryDto"
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - ACTIVE
+          - ARCHIVED
+        attributes:
+          type: string
+        posExternalId:
+          type: string
+        lastSyncedAt:
+          type: string
+          format: date-time
+        syncStatus:
+          type: string
+          enum:
+          - SYNCED
+          - PENDING
+          - FAILED
+          - WEB_ONLY
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductVariantDto"
+    ProductVariantDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        sku:
+          type: string
+        optionValues:
+          type: string
+        priceCents:
+          type: integer
+          format: int64
+        compareAtCents:
+          type: integer
+          format: int64
+        posExternalId:
+          type: string
+    ProductCreateRequest:
+      required:
+      - name
+      - slug
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - ACTIVE
+          - ARCHIVED
+        attributes:
+          type: string
+        posExternalId:
+          type: string
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductVariantCreateRequest"
+    ProductVariantCreateRequest:
+      required:
+      - optionValues
+      - sku
+      type: object
+      properties:
+        sku:
+          type: string
+        optionValues:
+          type: string
+        priceCents:
+          minimum: 0
+          type: integer
+          format: int64
+        compareAtCents:
+          type: integer
+          format: int64
+        posExternalId:
+          type: string
     InventoryDto:
       type: object
       properties:
@@ -425,6 +541,38 @@ components:
         lastSyncedAt:
           type: string
           format: date-time
+    StockAdjustmentRequest:
+      required:
+      - actor
+      - newQuantity
+      - reason
+      type: object
+      properties:
+        newQuantity:
+          type: integer
+          format: int32
+        safetyBuffer:
+          type: integer
+          format: int32
+        actor:
+          type: string
+        reason:
+          type: string
+    CategoryCreateRequest:
+      required:
+      - name
+      - slug
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: string
+          format: uuid
     InventoryOverviewDto:
       type: object
       properties:
@@ -465,53 +613,53 @@ components:
         sellableQuantity:
           type: integer
           format: int32
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
     PageProductDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
         content:
           type: array
           items:
-            $ref: '#/components/schemas/ProductDto'
+            $ref: "#/components/schemas/ProductDto"
         number:
           type: integer
           format: int32
         sort:
-          $ref: '#/components/schemas/SortObject'
-        numberOfElements:
-          type: integer
-          format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         empty:
           type: boolean
-    Pageable:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int32
-          minimum: 0
-        size:
-          type: integer
-          format: int32
-          minimum: 1
-        sort:
-          type: array
-          items:
-            type: string
     PageableObject:
       type: object
       properties:
@@ -519,156 +667,25 @@ components:
           type: integer
           format: int64
         sort:
-          $ref: '#/components/schemas/SortObject'
-        pageSize:
+          $ref: "#/components/schemas/SortObject"
+        unpaged:
+          type: boolean
+        pageNumber:
           type: integer
           format: int32
-        pageNumber:
+        pageSize:
           type: integer
           format: int32
         paged:
           type: boolean
-        unpaged:
-          type: boolean
-    ProductCreateRequest:
-      required:
-      - name
-      - slug
-      type: object
-      properties:
-        slug:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        categoryId:
-          type: string
-          format: uuid
-        status:
-          type: string
-          enum:
-          - DRAFT
-          - ACTIVE
-          - ARCHIVED
-        attributes:
-          type: string
-        posExternalId:
-          type: string
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductVariantCreateRequest'
-    ProductDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        slug:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        category:
-          $ref: '#/components/schemas/CategoryDto'
-        status:
-          type: string
-          enum:
-          - DRAFT
-          - ACTIVE
-          - ARCHIVED
-        attributes:
-          type: string
-        posExternalId:
-          type: string
-        lastSyncedAt:
-          type: string
-          format: date-time
-        syncStatus:
-          type: string
-          enum:
-          - SYNCED
-          - PENDING
-          - FAILED
-          - WEB_ONLY
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductVariantDto'
-    ProductUpdateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        categoryId:
-          type: string
-          format: uuid
-        status:
-          type: string
-          enum:
-          - DRAFT
-          - ACTIVE
-          - ARCHIVED
-        attributes:
-          type: string
-    ProductVariantCreateRequest:
-      required:
-      - optionValues
-      - priceCents
-      - sku
-      type: object
-      properties:
-        sku:
-          type: string
-        optionValues:
-          type: string
-        priceCents:
-          type: integer
-          format: int64
-        compareAtCents:
-          type: integer
-          format: int64
-        posExternalId:
-          type: string
-    ProductVariantDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        productId:
-          type: string
-          format: uuid
-        sku:
-          type: string
-        optionValues:
-          type: string
-        priceCents:
-          type: integer
-          format: int64
-        compareAtCents:
-          type: integer
-          format: int64
-        posExternalId:
-          type: string
     SortObject:
       type: object
       properties:
         empty:
           type: boolean
-        sorted:
-          type: boolean
         unsorted:
+          type: boolean
+        sorted:
           type: boolean
     StockAdjustmentAuditDto:
       type: object
@@ -695,20 +712,3 @@ components:
         adjustedAt:
           type: string
           format: date-time
-    StockAdjustmentRequest:
-      required:
-      - actor
-      - newQuantity
-      - reason
-      type: object
-      properties:
-        newQuantity:
-          type: integer
-          format: int32
-        safetyBuffer:
-          type: integer
-          format: int32
-        actor:
-          type: string
-        reason:
-          type: string
