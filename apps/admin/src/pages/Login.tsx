@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as any)?.from?.pathname || '/dashboard';
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ export const Login: React.FC = () => {
       setIsLoading(true);
       await login(email, role);
       navigate(from, { replace: true });
-    } catch (err: any) {
+    } catch {
       setError('Authentication failed. Please check your credentials.');
     } finally {
       setIsLoading(false);

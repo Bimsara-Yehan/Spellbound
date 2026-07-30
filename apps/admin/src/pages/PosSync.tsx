@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, CheckCircle2, AlertTriangle, Play, ShieldAlert } from 'lucide-react';
+import { RefreshCw, CheckCircle2, Play } from 'lucide-react';
 
 export const PosSync: React.FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);

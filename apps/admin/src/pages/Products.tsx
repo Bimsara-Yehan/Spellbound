@@ -3,17 +3,13 @@ import {
   Package,
   Plus,
   Search,
-  Filter,
   Edit,
   Trash2,
-  Eye,
   CheckSquare,
   Square,
   Archive,
   ChevronLeft,
   ChevronRight,
-  Layers,
-  Sparkles
 } from 'lucide-react';
 import { ProductModal, ProductData } from '../components/products/ProductModal';
 import { DeleteProductModal } from '../components/products/DeleteProductModal';

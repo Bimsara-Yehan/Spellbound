@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tag, Plus, Trash2, Check } from 'lucide-react';
+import { Tag, Plus } from 'lucide-react';
 
 interface VariantOption {
   type: string;
@@ -7,7 +7,7 @@ interface VariantOption {
 }
 
 export const Variants: React.FC = () => {
-  const [options, setOptions] = useState<VariantOption[]>([
+  const [options] = useState<VariantOption[]>([
     { type: 'Size', values: ['S', 'M', 'L', 'XL'] },
     { type: 'Colour', values: ['White', 'Navy', 'Olive'] },
   ]);

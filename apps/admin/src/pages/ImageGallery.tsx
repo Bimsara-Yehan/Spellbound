@@ -7,9 +7,7 @@ import {
   Eye,
   ArrowLeft,
   ArrowRight,
-  CheckCircle,
   Filter,
-  Layers
 } from 'lucide-react';
 import { ImageLightbox } from '../components/gallery/ImageLightbox';
 

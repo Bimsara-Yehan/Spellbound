@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  Layers,
   Image as ImageIcon,
   Tag
 } from 'lucide-react';

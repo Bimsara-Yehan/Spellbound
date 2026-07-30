@@ -10,7 +10,6 @@ import {
   User as UserIcon,
   Shield,
   Menu,
-  X
 } from 'lucide-react';
 
 export const AppShell: React.FC = () => {

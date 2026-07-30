@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Boxes, Edit, AlertCircle, Save, RotateCcw } from 'lucide-react';
+import { Boxes, Edit, Save } from 'lucide-react';
 
 interface StockItem {
   id: string;

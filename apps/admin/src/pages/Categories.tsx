@@ -9,7 +9,6 @@ import {
   ArrowDown,
   ChevronRight,
   ChevronDown,
-  Sparkles,
   Tag
 } from 'lucide-react';
 import { CategoryModal, CategoryData } from '../components/categories/CategoryModal';

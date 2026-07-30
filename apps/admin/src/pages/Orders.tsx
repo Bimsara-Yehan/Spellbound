@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Search, Eye, Clock, CheckCircle, Package } from 'lucide-react';
+import { ShoppingCart, Search, Eye } from 'lucide-react';
 
 interface Order {
   id: string;
