@@ -1,9 +1,687 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Spellbound E-Commerce API
+  description: API contract for Spellbound Storefront, Admin Panel, and Backend integration.
+  version: v0.1.0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
-paths: {}
-components: {}
+  - url: http://localhost:8080
+    description: Local Development Server
+
+paths:
+  /api/v1/categories:
+    get:
+      tags:
+        - Category
+      summary: Get all categories
+      operationId: getAllCategories
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDto'
+    post:
+      tags:
+        - Category
+      summary: Create a new category
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreateRequest'
+      responses:
+        '201':
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+
+  /api/v1/categories/{id}:
+    get:
+      tags:
+        - Category
+      summary: Get category by ID
+      operationId: getCategoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Category details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+
+  /api/v1/categories/slug/{slug}:
+    get:
+      tags:
+        - Category
+      summary: Get category by slug
+      operationId: getCategoryBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+
+  /api/v1/products:
+    get:
+      tags:
+        - Product
+      summary: Get paginated products with optional filters
+      operationId: getProducts
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProductStatus'
+        - name: categoryId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Paginated product list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductDto'
+                  totalElements:
+                    type: integer
+                    format: int64
+                  totalPages:
+                    type: integer
+                  size:
+                    type: integer
+                  number:
+                    type: integer
+    post:
+      tags:
+        - Product
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+
+  /api/v1/products/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product by ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+    put:
+      tags:
+        - Product
+      summary: Update product details
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdateRequest'
+      responses:
+        '200':
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+    delete:
+      tags:
+        - Product
+      summary: Archive product by ID
+      operationId: archiveProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Product archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+
+  /api/v1/products/slug/{slug}:
+    get:
+      tags:
+        - Product
+      summary: Get product by slug
+      operationId: getProductBySlug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+
+  /api/v1/inventory:
+    get:
+      tags:
+        - Inventory
+      summary: Get all inventory records
+      operationId: getAllInventories
+      responses:
+        '200':
+          description: List of inventory records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/low-stock:
+    get:
+      tags:
+        - Inventory
+      summary: Get low stock inventory items
+      operationId: getLowStockInventories
+      responses:
+        '200':
+          description: List of low stock inventory items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/{variantId}:
+    get:
+      tags:
+        - Inventory
+      summary: Get inventory by variant ID
+      operationId: getInventoryByVariantId
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Inventory record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/{variantId}/adjust:
+    post:
+      tags:
+        - Inventory
+      summary: Adjust stock level for a variant
+      operationId: adjustStock
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockAdjustmentRequest'
+      responses:
+        '200':
+          description: Updated inventory record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/{variantId}/reserve:
+    post:
+      tags:
+        - Inventory
+      summary: Reserve stock for checkout
+      operationId: reserveStock
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quantity
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Inventory updated with reserved stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/{variantId}/release:
+    post:
+      tags:
+        - Inventory
+      summary: Release reserved stock
+      operationId: releaseStock
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quantity
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Inventory updated with released stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryDto'
+
+  /api/v1/inventory/{variantId}/audit:
+    get:
+      tags:
+        - Inventory
+      summary: Get stock adjustment audit logs for a variant
+      operationId: getAuditLogs
+      parameters:
+        - name: variantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Audit logs list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockAdjustmentAuditDto'
+
+  /api/v1/reporting/inventory/overview:
+    get:
+      tags:
+        - Reporting
+      summary: Get inventory overview metrics
+      operationId: getInventoryOverview
+      responses:
+        '200':
+          description: Inventory overview metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryOverviewDto'
+
+  /api/v1/reporting/inventory/low-stock-alerts:
+    get:
+      tags:
+        - Reporting
+      summary: Get low stock alerts for dashboard
+      operationId: getLowStockAlerts
+      responses:
+        '200':
+          description: Low stock alerts list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LowStockAlertDto'
+
+components:
+  schemas:
+    ProductStatus:
+      type: string
+      enum:
+        - DRAFT
+        - ACTIVE
+        - ARCHIVED
+
+    SyncStatus:
+      type: string
+      enum:
+        - SYNCED
+        - PENDING
+        - FAILED
+        - WEB_ONLY
+
+    CategoryDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: string
+          format: uuid
+
+    CategoryCreateRequest:
+      type: object
+      required:
+        - slug
+        - name
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: string
+          format: uuid
+
+    ProductVariantDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        sku:
+          type: string
+        optionValues:
+          type: string
+        priceCents:
+          type: integer
+          format: int64
+        compareAtCents:
+          type: integer
+          format: int64
+        posExternalId:
+          type: string
+
+    ProductVariantCreateRequest:
+      type: object
+      required:
+        - sku
+        - optionValues
+        - priceCents
+      properties:
+        sku:
+          type: string
+        optionValues:
+          type: string
+        priceCents:
+          type: integer
+          format: int64
+        compareAtCents:
+          type: integer
+          format: int64
+        posExternalId:
+          type: string
+
+    ProductDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/CategoryDto'
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        attributes:
+          type: string
+        posExternalId:
+          type: string
+        lastSyncedAt:
+          type: string
+          format: date-time
+        syncStatus:
+          $ref: '#/components/schemas/SyncStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVariantDto'
+
+    ProductCreateRequest:
+      type: object
+      required:
+        - slug
+        - name
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        attributes:
+          type: string
+        posExternalId:
+          type: string
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVariantCreateRequest'
+
+    ProductUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        attributes:
+          type: string
+
+    InventoryDto:
+      type: object
+      properties:
+        variantId:
+          type: string
+          format: uuid
+        quantityOnHand:
+          type: integer
+        quantityReserved:
+          type: integer
+        safetyBuffer:
+          type: integer
+        sellableQuantity:
+          type: integer
+        lastSyncedAt:
+          type: string
+          format: date-time
+
+    StockAdjustmentRequest:
+      type: object
+      required:
+        - newQuantity
+        - actor
+        - reason
+      properties:
+        newQuantity:
+          type: integer
+        safetyBuffer:
+          type: integer
+        actor:
+          type: string
+        reason:
+          type: string
+
+    StockAdjustmentAuditDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        variantId:
+          type: string
+          format: uuid
+        actor:
+          type: string
+        quantityDelta:
+          type: integer
+        previousQuantity:
+          type: integer
+        newQuantity:
+          type: integer
+        reason:
+          type: string
+        adjustedAt:
+          type: string
+          format: date-time
+
+    InventoryOverviewDto:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          format: int64
+        totalVariants:
+          type: integer
+          format: int64
+        totalStockOnHand:
+          type: integer
+          format: int64
+        totalStockReserved:
+          type: integer
+          format: int64
+        lowStockVariantCount:
+          type: integer
+          format: int64
+
+    LowStockAlertDto:
+      type: object
+      properties:
+        variantId:
+          type: string
+          format: uuid
+        sku:
+          type: string
+        productName:
+          type: string
+        quantityOnHand:
+          type: integer
+        quantityReserved:
+          type: integer
+        safetyBuffer:
+          type: integer
+        sellableQuantity:
+          type: integer
