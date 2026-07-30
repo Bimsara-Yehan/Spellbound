@@ -69,13 +69,11 @@ tasks.named("forkedSpringBootRun") {
 
 // Used by the CI "contract" job to verify the committed openapi.yaml has not
 // drifted from what the running application actually exposes. Boots the app
-// under the `docs` profile, which excludes the datasource/Redis so this works
-// on a bare CI runner with no infrastructure containers.
+// with its normal configuration - the contract job provides real Postgres and
+// Redis service containers, same as production, rather than special-casing
+// around missing infrastructure.
 openApi {
     apiDocsUrl.set("http://localhost:8080/v3/api-docs.yaml")
-    customBootRun {
-        args.set(listOf("--spring.profiles.active=docs"))
-    }
     outputDir.set(layout.buildDirectory.get().asFile)
     outputFileName.set("openapi.yaml")
     waitTimeInSeconds.set(60)
